@@ -96,15 +96,18 @@ strong { color: var(--fg); font-weight: 600; }
 .stage { position: sticky; top: 0; height: 100vh; height: 100svh; }
 .stage canvas { display: block; width: 100%; height: 100%; }
 .levels {
-  position: absolute; top: 28px; right: 0; margin: 0; padding: 0; list-style: none;
+  position: absolute; top: 28px; right: 0; z-index: 2; margin: 0; padding: 0;
   display: grid; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
 }
-.levels li { display: flex; align-items: center; justify-content: flex-end; gap: 10px; opacity: 0.35; transition: opacity .4s, color .4s; }
+.levels a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 4px 0; color: var(--muted); opacity: 0.55; transition: opacity .3s, color .3s; cursor: pointer; }
+.levels a:hover { opacity: 1; color: var(--fg); }
 .levels b { font-family: var(--display); font-size: 15px; letter-spacing: 0; width: 26px; text-align: center; }
-.levels li.on { opacity: 1; color: var(--accent); }
-.panels { position: relative; z-index: 1; margin-top: -100vh; margin-top: -100svh; }
-.slot { min-height: 100vh; min-height: 100svh; display: flex; align-items: flex-end; padding-block: 0 7vh; }
+.levels a.on { opacity: 1; color: var(--accent); }
+.levels a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.panels { pointer-events: none; position: relative; z-index: 1; margin-top: -100vh; margin-top: -100svh; }
+.slot { pointer-events: none; min-height: 100vh; min-height: 100svh; display: flex; align-items: flex-end; padding-block: 0 7vh; }
 .panel {
+  pointer-events: auto;
   background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px;
   max-width: 560px; display: grid; gap: 10px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   transition: border-color .4s;
@@ -348,14 +351,14 @@ footer { font-family: var(--mono); font-size: 12px; }
       <div class="scrolly" id="scrolly">
         <div class="stage">
           <canvas id="cosmos" aria-hidden="true"></canvas>
-          <ol class="levels" aria-hidden="true">
-            <li data-l="0"><b>I</b>Planet</li>
-            <li data-l="1"><b>II</b>Star</li>
-            <li data-l="2"><b>III</b>Galaxy</li>
+          <ol class="levels" aria-hidden="Jump to a project">
+            <a href="#scale-0" data-l="0"><b>I</b>Planet</a>
+            <a href="#scale-1" data-l="1"><b>II</b>Star</a>
+            <a href="#scale-2" data-l="2"><b>III</b>Galaxy</a>
           </ol>
         </div>
         <div class="panels">
-          <div class="slot">
+          <div class="slot" id="scale-0">
             <article class="panel" data-l="0">
               <div class="ptop"><span class="type">Type I · Planet</span><span class="at">Genpact · 2020 to 2022</span></div>
               <h4>One complete system</h4>
@@ -363,7 +366,7 @@ footer { font-family: var(--mono); font-size: 12px; }
               <ul class="chips"><li>Spring Boot</li><li>Hibernate</li><li>Angular</li><li>JWT</li></ul>
             </article>
           </div>
-          <div class="slot">
+          <div class="slot" id="scale-1">
             <article class="panel" data-l="1">
               <div class="ptop"><span class="type">Type II · Star system</span><span class="at">Freddie Mac · 2023 to 2025</span></div>
               <h4>Six services in orbit</h4>
@@ -371,7 +374,7 @@ footer { font-family: var(--mono); font-size: 12px; }
               <ul class="chips"><li>Spring Boot</li><li>Eureka</li><li>Hystrix</li><li>React</li><li>AWS</li></ul>
             </article>
           </div>
-          <div class="slot">
+          <div class="slot" id="scale-2">
             <article class="panel" data-l="2">
               <div class="ptop"><span class="type">Type III · Galaxy</span><span class="at">Amazon Ads · 2025 to now</span></div>
               <h4>Ranking ads at Amazon scale</h4>
@@ -558,7 +561,7 @@ footer { font-family: var(--mono); font-size: 12px; }
   (function () {
     var c = document.getElementById('cosmos'), box = document.getElementById('scrolly'); if (!c || !box) return;
     var ctx = c.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 2), W, H;
-    var levels = document.querySelectorAll('.levels li'), panels = document.querySelectorAll('.panel');
+    var levels = document.querySelectorAll('.levels a'), panels = document.querySelectorAll('.panel');
     var N = innerWidth < 700 ? 900 : 1500, P = [];
     function gauss() { var u = 1 - Math.random(), v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(6.2832 * v); }
     for (var i = 0; i < N; i++) P.push({
@@ -647,6 +650,14 @@ footer { font-family: var(--mono); font-size: 12px; }
       }
       ctx.globalCompositeOperation = 'source-over';
     }
+   levels.forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        var k = +a.dataset.l, r = box.getBoundingClientRect();
+        var y = scrollY + r.top + (k / 2) * (box.offsetHeight - innerHeight);
+        window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+      });
+    });
     var running = false, visible = true;
     function loop(time) { if (!visible) { running = false; return; } frame(time); requestAnimationFrame(loop); }
     size(); frame(0);
