@@ -144,14 +144,14 @@ strong { color: var(--fg); font-weight: 600; }
 .flow .dot { fill: var(--accent); }
 .flow figcaption { font-family: var(--mono); font-size: 11px; margin-top: 8px; color: var(--muted); }
 
-nav ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
-nav a {
+.menu ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.menu a {
   display: inline-flex; align-items: center; gap: 14px; padding: 3px 0;
   font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
 }
-nav a::before { content: ""; width: 28px; height: 1px; background: currentColor; transition: width .25s, background .25s; }
-nav a:hover, nav a.on { color: var(--fg); }
-nav a:hover::before, nav a.on::before { width: 60px; background: var(--fg); }
+.menu a::before { content: ""; width: 28px; height: 1px; background: currentColor; transition: width .25s, background .25s; }
+.menu a:hover, .menu a.on { color: var(--fg); }
+.menu a:hover::before, .menu a.on::before { width: 60px; background: var(--fg); }
 
 .links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
 .links a, .links button {
@@ -238,8 +238,8 @@ footer { font-family: var(--mono); font-size: 12px; }
 @media (max-width: 900px) {
   .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding-inline: 20px; }
   .side { position: static; height: auto; padding-block: 72px 24px; }
-  nav ul { display: flex; flex-wrap: wrap; gap: 4px 18px; }
-  nav a::before { display: none; }
+  .menu ul { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .menu a::before { display: none; }
   main { padding-block: 32px 72px; gap: 72px; }
   .card { grid-template-columns: minmax(0, 1fr); gap: 6px; margin-inline: 0; padding: 16px 0; }
   .card:hover { background: none; border-color: transparent; }
@@ -261,7 +261,7 @@ footer { font-family: var(--mono); font-size: 12px; }
       <h1 class="name">Mouli Sambangi</h1>
       <p class="role">Software Development Engineer II at Amazon</p>
       <p class="tag">Java backend engineer building the systems that decide which ads shoppers see, at thousands of requests per second. My latest ranking signal lifted product sales <span class="hl">7%</span>.</p>
-      <span class="open"><i></i>Open to mid level SWE roles, anywhere in the US</span>
+      <span class="open"><i></i>Open to mid level SDE roles, anywhere in the US</span>
 
       <figure class="flow" aria-label="Simplified diagram of an ad auction request: a shopper query passes a relevance filter, picks up return rate and delivery speed signals, and reaches the auction where a winner is chosen.">
         <svg id="flowSvg" viewBox="0 0 350 112" role="img">
@@ -283,7 +283,7 @@ footer { font-family: var(--mono); font-size: 12px; }
         <figcaption>An ad request, simplified: filter, enrich, rank.</figcaption>
       </figure>
 
-      <nav aria-label="Sections" style="margin-top:28px">
+      <nav class="menu" aria-label="Sections" style="margin-top:28px">
         <ul>
           <li><a href="#about">About</a></li>
           <li><a href="#experience">Experience</a></li>
@@ -295,6 +295,7 @@ footer { font-family: var(--mono); font-size: 12px; }
     </div>
 
     <div class="links">
+      
       <a href="https://www.linkedin.com/in/mouli-sambangi-159a382a3" target="_blank" rel="noopener" aria-label="LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn
       </a>
@@ -346,24 +347,25 @@ footer { font-family: var(--mono); font-size: 12px; }
     <section id="projects">
       <h2 class="eyebrow">Projects at every scale</h2>
       <h3 class="scale-title">I aspire to build at <em>galactic</em> scale.</h3>
-      <p>Each role widened the orbit of what I build. First one complete system, then a star system of services, and now an ad auction that runs thousands of times every second.</p>
+      <p>Today I build at galaxy scale: an ad auction that runs thousands of times every second. Scroll back through how I got here, from a star system of services to the planet where it all started.</p>
 
       <div class="scrolly" id="scrolly">
         <div class="stage">
           <canvas id="cosmos" aria-hidden="true"></canvas>
-          <ol class="levels" aria-hidden="Jump to a project">
-            <a href="#scale-0" data-l="0"><b>I</b>Planet</a>
+          <nav class="levels" aria-label="Jump to a project">
+            <a href="#scale-0" data-l="0"><b>III</b>Galaxy</a>
             <a href="#scale-1" data-l="1"><b>II</b>Star</a>
-            <a href="#scale-2" data-l="2"><b>III</b>Galaxy</a>
-          </ol>
+            <a href="#scale-2" data-l="2"><b>I</b>Planet</a>
+          </nav>
         </div>
         <div class="panels">
           <div class="slot" id="scale-0">
             <article class="panel" data-l="0">
-              <div class="ptop"><span class="type">Type I · Planet</span><span class="at">Genpact · 2020 to 2022</span></div>
-              <h4>One complete system</h4>
-              <p>An enterprise loan management platform covering the full lifecycle: applications, approvals, credit scoring, and repayments, with credit bureau and payment gateway integrations.</p>
-              <ul class="chips"><li>Spring Boot</li><li>Hibernate</li><li>Angular</li><li>JWT</li></ul>
+              <div class="ptop"><span class="type">Type III · Galaxy</span><span class="at">Amazon Ads · 2025 to now</span></div>
+              <h4>Ranking ads at Amazon scale</h4>
+              <p>Ranking signals for the Sponsored Products ad auction, serving thousands of requests per second: product return rate, delivery speed, and a query relevance filter, all proven in Weblab experiments.</p>
+              <div class="big"><b>+7%</b><span>product sales from the return rate signal</span></div>
+              <ul class="chips"><li>Java</li><li>gRPC</li><li>Weblab</li><li>LLMs</li></ul>
             </article>
           </div>
           <div class="slot" id="scale-1">
@@ -376,11 +378,10 @@ footer { font-family: var(--mono); font-size: 12px; }
           </div>
           <div class="slot" id="scale-2">
             <article class="panel" data-l="2">
-              <div class="ptop"><span class="type">Type III · Galaxy</span><span class="at">Amazon Ads · 2025 to now</span></div>
-              <h4>Ranking ads at Amazon scale</h4>
-              <p>Ranking signals for the Sponsored Products ad auction, serving thousands of requests per second: product return rate, delivery speed, and a query relevance filter, all proven in Weblab experiments.</p>
-              <div class="big"><b>+7%</b><span>product sales from the return rate signal</span></div>
-              <ul class="chips"><li>Java</li><li>gRPC</li><li>Weblab</li><li>LLMs</li></ul>
+              <div class="ptop"><span class="type">Type I · Planet</span><span class="at">Genpact · 2020 to 2022</span></div>
+              <h4>One complete system</h4>
+              <p>An enterprise loan management platform covering the full lifecycle: applications, approvals, credit scoring, and repayments, with credit bureau and payment gateway integrations.</p>
+              <ul class="chips"><li>Spring Boot</li><li>Hibernate</li><li>Angular</li><li>JWT</li></ul>
             </article>
           </div>
         </div>
@@ -610,7 +611,7 @@ footer { font-family: var(--mono); font-size: 12px; }
       }
       rot(o, -0.35);
     }
-    var F = [planet, system, galaxy], A = {}, B = {};
+    var F = [galaxy, system, planet], A = {}, B = {};
 
     function size() {
       var r = c.getBoundingClientRect(); W = r.width; H = r.height;
@@ -650,7 +651,7 @@ footer { font-family: var(--mono); font-size: 12px; }
       }
       ctx.globalCompositeOperation = 'source-over';
     }
-   levels.forEach(function (a) {
+    levels.forEach(function (a) {
       a.addEventListener('click', function (ev) {
         ev.preventDefault();
         var k = +a.dataset.l, r = box.getBoundingClientRect();
@@ -673,7 +674,7 @@ footer { font-family: var(--mono); font-size: 12px; }
   })();
 
   // Highlight current section in the nav
-  var links = document.querySelectorAll('nav a');
+  var links = document.querySelectorAll('.menu a');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
