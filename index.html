@@ -690,5 +690,64 @@ footer { font-family: var(--mono); font-size: 12px; }
 })();
 </script>
 
+<!-- GoatCounter: private visitor analytics. Only you can see the dashboard. -->
+<script data-goatcounter="https://moulisambangi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+(function () {
+  // Send a custom event. Retries for a few seconds while the GoatCounter script loads.
+  function track(name, title, tries) {
+    tries = tries || 0;
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: name, title: title, event: true });
+    } else if (tries < 10) {
+      setTimeout(function () { track(name, title, tries + 1); }, 500);
+    }
+  }
+
+  // What visitors click
+  var projects = ['project-amazon', 'project-freddiemac', 'project-genpact'];
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('a, button');
+    if (!el) return;
+    var href = el.getAttribute('href') || '';
+    if (href.indexOf('linkedin.com') !== -1) {
+      track('click-linkedin', 'Opened your LinkedIn');
+    } else if (el.hasAttribute('data-copy')) {
+      track('copy-email', 'Copied your email address');
+    } else if (el.closest('.levels')) {
+      track(projects[+el.getAttribute('data-l')] || 'project-other', 'Jumped to a project from Galaxy, Star or Planet');
+    } else if (el.closest('.menu')) {
+      track('menu-' + href.replace('#', ''), 'Clicked ' + href.replace('#', '') + ' in the sidebar menu');
+    }
+  });
+
+  // How far down the page visitors get
+  if ('IntersectionObserver' in window) {
+    var seen = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var id = en.target.id;
+        if (en.isIntersecting && !seen[id]) {
+          seen[id] = true;
+          track('reached-' + id, 'Scrolled to the ' + id + ' section');
+        }
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
+  }
+
+  // How long visitors stay with the page open in front of them
+  var marks = [[30, 'stayed-30-seconds'], [120, 'stayed-2-minutes'], [300, 'stayed-5-minutes']];
+  var visibleSeconds = 0;
+  var timer = setInterval(function () {
+    if (document.visibilityState === 'visible') visibleSeconds++;
+    while (marks.length && visibleSeconds >= marks[0][0]) {
+      var m = marks.shift();
+      track(m[1], 'Spent at least ' + m[0] + ' seconds on the page');
+    }
+    if (!marks.length) clearInterval(timer);
+  }, 1000);
+})();
+</script>
 </body>
 </html>
